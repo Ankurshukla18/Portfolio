@@ -9,7 +9,7 @@ export default function TechIntro({ onComplete }: { onComplete?: () => void }) {
   const [isDone, setIsDone] = useState(false)
   const fullCommand = 'init ankur.shukla --backend --production'
 
-  // Storyboard timeline transitions
+  // Storyboard timeline transitions (runs strictly once on mount)
   useEffect(() => {
     // Shot 1 -> Shot 2 at 2.0s
     const t1 = setTimeout(() => setShot(2), 2000)
@@ -17,23 +17,23 @@ export default function TechIntro({ onComplete }: { onComplete?: () => void }) {
     const t2 = setTimeout(() => setShot(3), 3600)
     // Shot 3 -> Shot 4 at 5.6s
     const t3 = setTimeout(() => setShot(4), 5600)
-    // Shot 4 -> Outro Finish at 7.8s
-    const t4 = setTimeout(() => handleComplete(), 7800)
-
-    // Allow escape key to skip
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') handleComplete()
-    }
-    window.addEventListener('keydown', onKeyDown)
 
     return () => {
       clearTimeout(t1)
       clearTimeout(t2)
       clearTimeout(t3)
-      clearTimeout(t4)
-      window.removeEventListener('keydown', onKeyDown)
     }
   }, [])
+
+  // Keyboard shortcut listener (ESC to skip anytime, ENTER to enter in shot 4)
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') handleComplete()
+      if (e.key === 'Enter' && shot === 4) handleComplete()
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [shot])
 
   // Typing effect in Shot 3
   useEffect(() => {
@@ -301,16 +301,39 @@ export default function TechIntro({ onComplete }: { onComplete?: () => void }) {
               <motion.div
                 initial={{ scale: 0.6, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.8, duration: 0.6, type: 'spring' }}
-                className="flex flex-col items-center gap-3"
+                transition={{ delay: 0.7, duration: 0.6, type: 'spring' }}
+                className="flex flex-col items-center gap-3 mb-6"
               >
                 <Starburst12Point className="w-14 h-14 text-[#e63022] drop-shadow-[0_0_35px_rgba(230,48,34,0.9)] animate-pulse-slow" />
                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white">
                   ANKUR SHUKLA
                 </h2>
-                <p className="text-xs tracking-[0.35em] uppercase text-[#e63022]">
-                  ENTER THE PORTFOLIO
+                <p className="text-[10px] tracking-[0.35em] uppercase text-[#777]">
+                  SYSTEM READY // ACCESS GRANTED
                 </p>
+              </motion.div>
+
+              {/* ── ENTER PORTFOLIO BUTTON (Click to enter) ── */}
+              <motion.div
+                initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ delay: 1.0, duration: 0.5, type: 'spring', stiffness: 300, damping: 20 }}
+                className="flex flex-col items-center gap-2"
+              >
+                <button
+                  onClick={handleComplete}
+                  className="group relative flex items-center gap-3 px-8 py-4 border-2 border-[#e63022] bg-[#e63022]/15 hover:bg-[#e63022] text-white font-display text-sm md:text-base font-bold uppercase tracking-[0.2em] rounded-sm transition-all duration-300 shadow-[0_0_30px_rgba(230,48,34,0.4)] hover:shadow-[0_0_50px_rgba(230,48,34,0.8)] overflow-hidden cursor-pointer"
+                >
+                  <span className="w-2 h-2 rounded-full bg-[#ff3b2a] animate-ping" />
+                  <span>ENTER PORTFOLIO</span>
+                  <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-1.5 transition-transform duration-300" />
+
+                  {/* Red light sweep animation across button */}
+                  <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
+                </button>
+                <span className="text-[10px] font-mono text-[#555] tracking-widest uppercase">
+                  [ Click to Enter or Press ENTER ]
+                </span>
               </motion.div>
             </motion.div>
           )}
@@ -319,8 +342,8 @@ export default function TechIntro({ onComplete }: { onComplete?: () => void }) {
           <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#111]">
             <motion.div
               initial={{ width: '0%' }}
-              animate={{ width: '100%' }}
-              transition={{ duration: 7.6, ease: 'linear' }}
+              animate={{ width: shot === 4 ? '100%' : shot === 3 ? '75%' : shot === 2 ? '45%' : '25%' }}
+              transition={{ duration: 1.2, ease: 'easeOut' }}
               className="h-full bg-gradient-to-r from-[#8b1a10] via-[#e63022] to-[#ff4d3a]"
             />
           </div>
