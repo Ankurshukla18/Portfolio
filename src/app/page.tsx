@@ -1,5 +1,7 @@
 'use client'
+import { useState } from 'react'
 import dynamic from 'next/dynamic'
+import TechIntro from '@/components/TechIntro'
 import Navbar from '@/components/Navbar'
 import Hero from '@/components/Hero'
 import About from '@/components/About'
@@ -21,6 +23,9 @@ const CustomCursor = dynamic(() => import('@/components/CustomCursor'), {
 export default function Home() {
   return (
     <main className="relative bg-[#050505] min-h-screen">
+      {/* High-tech cinematic intro animation sequence */}
+      <TechIntro />
+
       <CustomCursor />
       <Navbar />
       <Hero />
