@@ -1,53 +1,65 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowRight, Terminal, Search } from 'lucide-react'
+import {
+  Bell,
+  Clock,
+  MessageSquare,
+  BarChart2,
+  Sparkles,
+  ArrowRight,
+  Search,
+  CheckCircle2,
+} from 'lucide-react'
 
 export default function TechIntro({ onComplete }: { onComplete?: () => void }) {
-  const [shot, setShot] = useState<1 | 2 | 3 | 4>(1)
-  const [typedText, setTypedText] = useState('')
+  const [shot, setShot] = useState<1 | 2 | 3 | 4 | 5>(1)
   const [isDone, setIsDone] = useState(false)
-  const fullCommand = 'init ankur.shukla --backend --production'
+  const [typedQuestion, setTypedQuestion] = useState('')
+  const fullQuestion = "Can you summarize Ankur's backend engineering capabilities and projects?"
 
-  // Storyboard timeline transitions (runs strictly once on mount)
+  // Storyboard timeline transitions (accelerated snappy pacing)
   useEffect(() => {
-    // Shot 1 -> Shot 2 at 2.0s
-    const t1 = setTimeout(() => setShot(2), 2000)
-    // Shot 2 -> Shot 3 at 3.6s
-    const t2 = setTimeout(() => setShot(3), 3600)
+    // Shot 1 -> Shot 2 at 1.5s
+    const t1 = setTimeout(() => setShot(2), 1500)
+    // Shot 2 -> Shot 3 at 3.4s
+    const t2 = setTimeout(() => setShot(3), 3400)
     // Shot 3 -> Shot 4 at 5.6s
     const t3 = setTimeout(() => setShot(4), 5600)
+    // Shot 4 -> Shot 5 at 7.8s
+    const t4 = setTimeout(() => setShot(5), 7800)
 
     return () => {
       clearTimeout(t1)
       clearTimeout(t2)
       clearTimeout(t3)
+      clearTimeout(t4)
     }
   }, [])
 
-  // Keyboard shortcut listener (ESC to skip anytime, ENTER to enter in shot 4)
+  // Keyboard shortcut listener (ESC to skip anytime, ENTER to enter in Shot 5)
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') handleComplete()
-      if (e.key === 'Enter' && shot === 4) handleComplete()
+      if (e.key === 'Enter' && shot === 5) handleComplete()
     }
     window.addEventListener('keydown', onKeyDown)
     return () => window.removeEventListener('keydown', onKeyDown)
   }, [shot])
 
-  // Typing effect in Shot 3
+  // Faster typing effect in Shot 3 (User AI Chat question)
   useEffect(() => {
     if (shot === 3) {
       let currentIdx = 0
-      setTypedText('')
+      setTypedQuestion('')
       const interval = setInterval(() => {
-        if (currentIdx <= fullCommand.length) {
-          setTypedText(fullCommand.slice(0, currentIdx))
+        if (currentIdx <= fullQuestion.length) {
+          setTypedQuestion(fullQuestion.slice(0, currentIdx))
           currentIdx++
         } else {
           clearInterval(interval)
         }
-      }, 38)
+      }, 12)
       return () => clearInterval(interval)
     }
   }, [shot])
@@ -66,22 +78,31 @@ export default function TechIntro({ onComplete }: { onComplete?: () => void }) {
           exit={{
             opacity: 0,
             scale: 1.05,
-            filter: 'blur(10px)',
-            transition: { duration: 0.75, ease: [0.22, 1, 0.36, 1] },
+            filter: 'blur(12px)',
+            transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
           }}
           className="fixed inset-0 z-[99999] bg-[#050505] flex items-center justify-center overflow-hidden font-display select-none"
         >
-          {/* Subtle warm center radial glow */}
+          {/* Subtle neon red radial ambient glow */}
           <div
             className="absolute inset-0 pointer-events-none"
             style={{
               background:
-                'radial-gradient(circle at center, rgba(230,48,34,0.18) 0%, rgba(139,26,16,0.06) 40%, transparent 70%)',
+                'radial-gradient(circle at center, rgba(230,48,34,0.18) 0%, rgba(139,26,16,0.06) 45%, transparent 70%)',
             }}
           />
 
-          {/* Grain texture overlay */}
-          <div className="absolute inset-0 opacity-[0.035] pointer-events-none bg-[radial-gradient(#e63022_1px,transparent_1px)] [background-size:16px_16px]" />
+          {/* Dark geometric grid background matching the portfolio */}
+          <div
+            className="absolute inset-0 pointer-events-none opacity-[0.05]"
+            style={{
+              backgroundImage: `
+                linear-gradient(to right, #e63022 1px, transparent 1px),
+                linear-gradient(to bottom, #e63022 1px, transparent 1px)
+              `,
+              backgroundSize: '40px 40px',
+            }}
+          />
 
           {/* Top Skip button */}
           <div className="absolute top-6 right-6 z-50 flex items-center gap-2">
@@ -90,234 +111,408 @@ export default function TechIntro({ onComplete }: { onComplete?: () => void }) {
               className="flex items-center gap-1.5 px-3 py-1.5 border border-[#222] hover:border-[#e63022]/60 bg-[#0a0a0a]/80 text-[#777] hover:text-white text-[11px] tracking-[0.2em] uppercase rounded-sm transition-all duration-300"
             >
               <span>SKIP</span>
-              <span className="text-[9px] text-[#444]">[ESC]</span>
+              <span className="text-[9px] text-[#555]">[ESC]</span>
             </button>
           </div>
 
           {/* ─────────────────────────────────────────────────────────────
-              SHOT 1: The Icon Burst (00:00 – 00:02)
+              SHOT 1: Brand Intro & Dashboard Reveal (00:00 – 00:02.2)
           ───────────────────────────────────────────────────────────── */}
           {shot === 1 && (
-            <div className="relative flex flex-col items-center justify-center">
-              {/* Spinning high-velocity streak */}
-              <motion.div
-                initial={{ scaleY: 0.1, scaleX: 1, rotate: 0, opacity: 0 }}
-                animate={{
-                  scaleY: [0.1, 2.5, 0.2],
-                  scaleX: [1, 0.1, 1],
-                  rotate: [0, 720],
-                  opacity: [0, 1, 0.8],
-                }}
-                transition={{ duration: 1.1, ease: 'easeInOut' }}
-                className="w-[3px] h-[120px] bg-[#ff3b2a] rounded-full shadow-[0_0_25px_#e63022]"
-              />
-
-              {/* 12-point glowing geometric starburst icon burst */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.15, filter: 'blur(8px)' }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="relative flex flex-col items-center justify-center w-full max-w-xl px-6"
+            >
+              {/* Glowing neon red four-pointed star logo */}
               <motion.div
                 initial={{ scale: 0, rotate: -90, opacity: 0 }}
-                animate={{ scale: [0, 1.25, 1], rotate: [0, 180], opacity: 1 }}
-                transition={{ delay: 0.85, duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute flex items-center justify-center"
+                animate={{ scale: [0, 1.25, 1], rotate: [0, 90, 0], opacity: 1 }}
+                transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+                className="relative mb-5"
               >
-                <Starburst12Point className="w-24 h-24 text-[#e63022] drop-shadow-[0_0_35px_rgba(230,48,34,0.9)]" />
+                <div className="absolute -inset-4 rounded-full bg-[#e63022]/30 blur-xl pointer-events-none animate-pulse" />
+                <FourPointStar className="w-16 h-16 text-[#ff3b2a] drop-shadow-[0_0_30px_rgba(230,48,34,0.9)]" />
               </motion.div>
 
-              {/* Kinetic expanding shockwave ring */}
+              {/* Crisp white title text */}
+              <motion.h1
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.3, duration: 0.7 }}
+                className="text-3xl md:text-4xl font-bold tracking-tight text-white mb-1.5 text-center"
+              >
+                ANKUR SHUKLA
+              </motion.h1>
+              <motion.p
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.45, duration: 0.7 }}
+                className="text-xs tracking-[0.3em] uppercase text-[#e63022] mb-8 font-mono text-center"
+              >
+                SOFTWARE DEVELOPER // ARCHITECTURE
+              </motion.p>
+
+              {/* Smooth zoom transition into 3D dark-mode glassmorphic search dashboard */}
               <motion.div
-                initial={{ scale: 0.2, opacity: 0 }}
-                animate={{ scale: [0.2, 2.4], opacity: [0, 0.8, 0] }}
-                transition={{ delay: 0.95, duration: 0.9, ease: 'easeOut' }}
-                className="absolute w-28 h-28 rounded-full border border-[#e63022]/80"
-              />
-            </div>
+                initial={{ y: 40, opacity: 0, scale: 0.85, rotateX: 20 }}
+                animate={{ y: 0, opacity: 1, scale: 1, rotateX: 0 }}
+                transition={{ delay: 0.65, duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
+                className="w-full bg-[#0d0707]/85 border border-[#e63022]/40 rounded-2xl p-4 shadow-[0_20px_50px_rgba(0,0,0,0.9),0_0_30px_rgba(230,48,34,0.25)] backdrop-blur-xl"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
+                {/* Glowing red header */}
+                <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#e63022]/20">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#e63022] shadow-[0_0_8px_#e63022]" />
+                    <span className="text-[10px] font-mono tracking-widest uppercase text-[#ff4d3a]">
+                      SYSTEM DASHBOARD // V2.6
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-[#222]" />
+                    <span className="w-2 h-2 rounded-full bg-[#222]" />
+                    <span className="w-2 h-2 rounded-full bg-[#222]" />
+                  </div>
+                </div>
+
+                {/* Search bar inside dashboard */}
+                <div className="flex items-center gap-2.5 bg-[#050505] border border-[#222] rounded-xl px-3.5 py-2.5 text-xs text-[#777]">
+                  <Search className="w-4 h-4 text-[#e63022]" />
+                  <span>Searching backend services, APIs, and real-time systems...</span>
+                </div>
+
+                {/* Rounded floating UI elements */}
+                <div className="grid grid-cols-3 gap-2 mt-3">
+                  {['API Engine', 'Distributed DB', 'Microservices'].map((tag, i) => (
+                    <motion.div
+                      key={tag}
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      transition={{ delay: 0.9 + i * 0.1 }}
+                      className="py-1.5 px-2 bg-[#180909] border border-[#e63022]/25 rounded-lg text-[9.5px] font-mono text-center text-[#ff9e94]"
+                    >
+                      {tag}
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+            </motion.div>
           )}
 
           {/* ─────────────────────────────────────────────────────────────
-              SHOT 2: UI Expansion & Logo Reveal (00:02 – 00:03.6)
+              SHOT 2: Concentric Radar & Orbital Badges (00:02.2 – 00:05.0)
           ───────────────────────────────────────────────────────────── */}
           {shot === 2 && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.92 }}
+              initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 1.05 }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="relative w-full max-w-xl px-6 flex flex-col items-center"
+              exit={{ opacity: 0, scale: 1.15, filter: 'blur(8px)' }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="relative flex items-center justify-center w-[400px] h-[400px] md:w-[480px] md:h-[480px]"
             >
-              {/* Logo + Branding */}
-              <div className="flex items-center gap-4 mb-8">
+              {/* Concentric Circular Rings */}
+              {[120, 200, 280, 360].map((dim, idx) => (
                 <motion.div
-                  initial={{ rotate: -45, scale: 0.7 }}
-                  animate={{ rotate: 0, scale: 1 }}
-                  transition={{ duration: 0.7, type: 'spring', stiffness: 220 }}
-                >
-                  <Starburst12Point className="w-10 h-10 text-[#e63022] drop-shadow-[0_0_20px_rgba(230,48,34,0.8)]" />
-                </motion.div>
-                <div>
-                  <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-white flex items-center gap-2">
-                    ANKUR SHUKLA
-                    <span className="w-2 h-2 rounded-full bg-[#e63022] animate-pulse" />
-                  </h1>
-                  <p className="text-[10px] tracking-[0.3em] uppercase text-[#666]">
-                    BACKEND SYSTEMS // DISTRIBUTED APIs
-                  </p>
-                </div>
-              </div>
+                  key={dim}
+                  initial={{ scale: 0, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ delay: idx * 0.12, duration: 0.7, ease: 'easeOut' }}
+                  className="absolute rounded-full border border-[#e63022]/30"
+                  style={{
+                    width: dim,
+                    height: dim,
+                    boxShadow: idx === 1 ? '0 0 25px rgba(230,48,34,0.18)' : 'none',
+                  }}
+                />
+              ))}
 
-              {/* Sleek Glassmorphic Floating Search Bar */}
+              {/* Radar Sweep Beam */}
               <motion.div
-                initial={{ y: 25, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.15, duration: 0.6, type: 'spring', damping: 18 }}
-                className="w-full bg-[#0d0d0d]/80 backdrop-blur-xl border border-[#222] shadow-[0_15px_40px_rgba(0,0,0,0.8)] rounded-full p-2 pl-5 flex items-center gap-3"
-              >
-                <Search className="w-4 h-4 text-[#555]" />
-                <span className="text-xs text-[#888] font-mono">
-                  Explore architecture, services, and live projects...
-                </span>
-                <span className="ml-auto px-3 py-1 bg-[#1a1a1a] text-[10px] text-[#555] rounded-full uppercase tracking-wider font-mono">
-                  ⌘K
-                </span>
-              </motion.div>
-
-              {/* Pill-shaped filter buttons popping into place with elastic motion */}
-              <motion.div
-                initial="hidden"
-                animate="visible"
-                variants={{
-                  hidden: {},
-                  visible: { transition: { staggerChildren: 0.08, delayChildren: 0.3 } },
+                animate={{ rotate: 360 }}
+                transition={{ duration: 4.5, repeat: Infinity, ease: 'linear' }}
+                className="absolute w-[360px] h-[360px] rounded-full pointer-events-none"
+                style={{
+                  background:
+                    'conic-gradient(from 0deg, rgba(230,48,34,0.25) 0deg, transparent 60deg, transparent 360deg)',
                 }}
-                className="flex flex-wrap justify-center gap-2 mt-4"
+              />
+
+              {/* Center "New Updates" core badge */}
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: [0, 1.15, 1] }}
+                transition={{ delay: 0.25, duration: 0.6, type: 'spring' }}
+                className="relative z-10 flex flex-col items-center justify-center w-24 h-24 rounded-full bg-[#120707] border-2 border-[#e63022] shadow-[0_0_30px_rgba(230,48,34,0.6)]"
               >
-                {['FASTAPI', 'REST APIs', 'PYTHON', 'POSTGRESQL', 'ARCHITECTURE'].map((pill) => (
-                  <motion.div
-                    key={pill}
-                    variants={{
-                      hidden: { scale: 0.6, opacity: 0, y: 15 },
-                      visible: { scale: 1, opacity: 1, y: 0 },
-                    }}
-                    transition={{ type: 'spring', stiffness: 350, damping: 20 }}
-                    className="px-3.5 py-1.5 rounded-full border border-[#1a1a1a] bg-[#0a0a0a]/90 text-[10px] tracking-wider uppercase text-[#888] hover:border-[#e63022]/40"
-                  >
-                    {pill}
-                  </motion.div>
-                ))}
+                <div className="w-2 h-2 rounded-full bg-[#ff3b2a] animate-ping mb-1" />
+                <span className="text-[10px] font-bold text-white tracking-widest uppercase">
+                  NEW
+                </span>
+                <span className="text-[9px] font-mono text-[#e63022] tracking-wider uppercase">
+                  UPDATES
+                </span>
               </motion.div>
+
+              {/* Small red glowing icon pills orbiting on the circular paths */}
+              <OrbitalBadge
+                icon={<Bell className="w-3.5 h-3.5 text-white" />}
+                label="Alerts"
+                radius={100}
+                speed={8}
+                initialAngle={0}
+                delay={0.3}
+              />
+              <OrbitalBadge
+                icon={<Clock className="w-3.5 h-3.5 text-white" />}
+                label="Uptime 99.9%"
+                radius={140}
+                speed={10}
+                initialAngle={90}
+                delay={0.45}
+              />
+              <OrbitalBadge
+                icon={<MessageSquare className="w-3.5 h-3.5 text-white" />}
+                label="APIs Live"
+                radius={180}
+                speed={12}
+                initialAngle={180}
+                delay={0.6}
+              />
+              <OrbitalBadge
+                icon={<BarChart2 className="w-3.5 h-3.5 text-white" />}
+                label="Telemetry"
+                radius={140}
+                speed={9}
+                initialAngle={270}
+                delay={0.75}
+              />
             </motion.div>
           )}
 
           {/* ─────────────────────────────────────────────────────────────
-              SHOT 3: Dynamic Focus & Text Input (00:03.6 – 00:05.6)
+              SHOT 3: AI Chat Interface & Card Pop-up (00:05.0 – 00:08.2)
           ───────────────────────────────────────────────────────────── */}
           {shot === 3 && (
             <motion.div
-              initial={{ scale: 0.85, opacity: 0 }}
-              animate={{ scale: 1.15, opacity: 1 }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-full max-w-lg px-6 flex flex-col items-center"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, filter: 'blur(8px)' }}
+              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="relative w-full max-w-xl px-6 flex flex-col gap-4"
             >
-              <div className="w-full flex items-center justify-between text-[11px] font-mono text-[#555] mb-2 px-2">
-                <span className="flex items-center gap-1.5 text-[#e63022]">
-                  <Terminal className="w-3.5 h-3.5" />
-                  SHELL_SESSION: ACTIVE
-                </span>
-                <span>EXEC_MODE</span>
-              </div>
+              {/* User Chat Bubble with Glowing Red Border */}
+              <motion.div
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5 }}
+                className="self-end max-w-md bg-[#120707]/90 border border-[#e63022]/60 rounded-2xl rounded-tr-sm p-4 shadow-[0_10px_30px_rgba(230,48,34,0.25)] backdrop-blur-md"
+              >
+                <div className="flex items-center gap-1.5 mb-1.5 text-[10px] font-mono text-[#e63022]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#e63022]" />
+                  <span>USER QUERY</span>
+                </div>
+                <p className="font-mono text-xs md:text-sm text-white leading-relaxed">
+                  {typedQuestion}
+                  <span className="w-2 h-4 inline-block bg-[#ff3b2a] ml-1 animate-pulse" />
+                </p>
+              </motion.div>
 
-              {/* Kinetic Zoomed Text Input Bar */}
-              <div className="w-full bg-[#0a0a0a] border-2 border-[#e63022]/70 shadow-[0_0_35px_rgba(230,48,34,0.3)] rounded-2xl p-4 flex items-center justify-between gap-4">
-                <div className="flex items-center gap-2 font-mono text-sm md:text-base text-[#f5f5f0] overflow-hidden whitespace-nowrap">
-                  <span className="text-[#e63022] font-bold">&gt;</span>
-                  <span>{typedText}</span>
-                  <span className="w-2 h-5 bg-[#e63022] inline-block animate-pulse" />
+              {/* AI Agent Card Slide-in with Glowing Red Sparkle Icon */}
+              <motion.div
+                initial={{ opacity: 0, x: -30, scale: 0.92 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                transition={{ delay: 0.95, duration: 0.6, type: 'spring', damping: 20 }}
+                className="self-start w-full bg-[#0e0606]/95 border-2 border-[#e63022] rounded-2xl rounded-tl-sm p-5 shadow-[0_15px_45px_rgba(0,0,0,0.8),0_0_35px_rgba(230,48,34,0.3)] backdrop-blur-xl"
+              >
+                {/* Header with Sparkle Icon */}
+                <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#e63022]/30">
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-lg bg-[#e63022]/20 border border-[#e63022] flex items-center justify-center">
+                      <Sparkles className="w-4 h-4 text-[#ff3b2a] animate-pulse" />
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold text-white block">
+                        ANKUR_AI // INTELLIGENCE AGENT
+                      </span>
+                      <span className="text-[9px] font-mono text-[#e63022] block">
+                        VERIFIED PROFILE ANALYSIS
+                      </span>
+                    </div>
+                  </div>
+                  <span className="text-[9px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                    MATCH: 100%
+                  </span>
                 </div>
 
-                {/* Vibrant neon red send icon button lighting up & clicking down */}
-                <motion.button
-                  animate={{
-                    scale: typedText.length > 25 ? [1, 0.88, 1] : 1,
-                    backgroundColor:
-                      typedText.length > 25 ? '#e63022' : 'rgba(230,48,34,0.15)',
-                  }}
-                  transition={{ duration: 0.25 }}
-                  className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center border border-[#e63022] shadow-[0_0_20px_rgba(230,48,34,0.5)]"
-                >
-                  <ArrowRight className="w-5 h-5 text-white" />
-                </motion.button>
-              </div>
-
-              {/* Depth of field blur ring */}
-              <div className="absolute inset-0 -z-10 rounded-3xl blur-2xl bg-gradient-to-r from-[#e63022]/10 to-transparent" />
+                {/* Animated Bullet Points */}
+                <div className="space-y-2 font-mono text-xs text-[#ddd]">
+                  {[
+                    'High-performance FastAPI & Python backend architectures',
+                    'Scalable distributed systems, authentication & RESTful APIs',
+                    'PostgreSQL schema optimization & real-time telemetry pipelines',
+                  ].map((bullet, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: -15 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 1.25 + i * 0.16, duration: 0.45 }}
+                      className="flex items-start gap-2.5"
+                    >
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#ff3b2a] mt-0.5 flex-shrink-0" />
+                      <span className="text-[#eee]">{bullet}</span>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
             </motion.div>
           )}
 
           {/* ─────────────────────────────────────────────────────────────
-              SHOT 4: Code/Data Cascade & Outro Snap (00:05.6 – 00:07.8)
+              SHOT 4: 3D Glassmorphic Card Carousel (00:08.2 – 00:11.4)
           ───────────────────────────────────────────────────────────── */}
           {shot === 4 && (
             <motion.div
-              initial={{ scale: 1.4, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-              className="relative w-full max-w-2xl px-6 flex flex-col items-center text-center"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 1.2, filter: 'blur(10px)' }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="relative flex flex-col items-center justify-center w-full max-w-2xl px-6"
             >
-              {/* Cascading clean code/markdown printing on dark glass */}
-              <div className="w-full bg-[#080808]/90 border border-[#1a1a1a] rounded-xl p-6 text-left font-mono text-xs text-[#888] shadow-2xl mb-8 space-y-1.5 backdrop-blur-md">
-                <motion.p
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.05 }}
-                  className="text-[#e63022] font-semibold"
-                >
-                  [SYSTEM INITIALIZED] :: BUILD TARGET V2026.1
-                </motion.p>
-                <motion.p
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.25 }}
-                  className="text-white"
-                >
-                  ✓ LOADED: FastAPI, Python, PostgreSQL, System Design
-                </motion.p>
-                <motion.p
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.45 }}
-                  className="text-[#666]"
-                >
-                  ✓ VERIFIED: College Bus Tracking, Patient Management, Security Core
-                </motion.p>
-                <motion.p
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.65 }}
-                  className="text-[#ff3b2a]"
-                >
-                  ➜ RESOLVING DISPLAY STACK... READY
-                </motion.p>
+              <div className="text-center mb-6">
+                <span className="text-[10px] font-mono tracking-[0.3em] uppercase text-[#e63022] block mb-1">
+                  CORE HIGHLIGHTS // 3D CAROUSEL
+                </span>
+                <h3 className="text-2xl font-bold text-white tracking-tight">
+                  FEATURED ENGINEERING STACK
+                </h3>
               </div>
 
-              {/* Resolved centered glowing starburst logo & brand name */}
-              <motion.div
-                initial={{ scale: 0.6, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.7, duration: 0.6, type: 'spring' }}
-                className="flex flex-col items-center gap-3 mb-6"
+              {/* 3D Carousel container */}
+              <div
+                className="relative w-full h-[240px] flex items-center justify-center"
+                style={{ perspective: '1200px' }}
               >
-                <Starburst12Point className="w-14 h-14 text-[#e63022] drop-shadow-[0_0_35px_rgba(230,48,34,0.9)] animate-pulse-slow" />
-                <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white">
-                  ANKUR SHUKLA
-                </h2>
-                <p className="text-[10px] tracking-[0.35em] uppercase text-[#777]">
-                  SYSTEM READY // ACCESS GRANTED
-                </p>
+                {[
+                  { title: 'FastAPI & Python', sub: 'Async Backend & ORM', tag: '01' },
+                  { title: 'College Bus Tracking', sub: 'Live GPS & Route Alerts', tag: '02' },
+                  { title: 'Patient Management', sub: 'Secure Health Record API', tag: '03' },
+                  { title: 'PostgreSQL & Docker', sub: 'Containerized Datastores', tag: '04' },
+                ].map((card, i) => {
+                  const angle = (i * 90) % 360
+                  return (
+                    <motion.div
+                      key={card.tag}
+                      animate={{
+                        rotateY: [angle, angle + 360],
+                      }}
+                      transition={{
+                        repeat: Infinity,
+                        duration: 10,
+                        ease: 'linear',
+                      }}
+                      className="absolute w-[220px] h-[170px] rounded-2xl p-5 border border-[#e63022]/50 shadow-[0_15px_40px_rgba(0,0,0,0.8),0_0_25px_rgba(230,48,34,0.3)] backdrop-blur-2xl flex flex-col justify-between"
+                      style={{
+                        background:
+                          'linear-gradient(135deg, rgba(35,10,10,0.85) 0%, rgba(12,6,6,0.95) 100%)',
+                        transformStyle: 'preserve-3d',
+                        transformOrigin: '50% 50% -180px',
+                      }}
+                    >
+                      {/* Card glow shimmer & reflection */}
+                      <div className="flex items-center justify-between">
+                        <span className="text-[9px] font-mono text-[#e63022] tracking-wider">
+                          STACK #{card.tag}
+                        </span>
+                        <FourPointStar className="w-3.5 h-3.5 text-[#ff3b2a]" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-sm text-white leading-snug mb-1">
+                          {card.title}
+                        </h4>
+                        <p className="text-[10px] text-[#aaa] font-mono">{card.sub}</p>
+                      </div>
+                      <div className="h-0.5 w-full bg-gradient-to-r from-[#e63022] to-transparent rounded-full" />
+                    </motion.div>
+                  )
+                })}
+              </div>
+            </motion.div>
+          )}
+
+          {/* ─────────────────────────────────────────────────────────────
+              SHOT 5: Outro Spotlight Reveal (00:11.4 – Click to Enter)
+          ───────────────────────────────────────────────────────────── */}
+          {shot === 5 && (
+            <motion.div
+              initial={{ scale: 1.3, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+              className="relative w-full max-w-xl px-6 flex flex-col items-center text-center"
+            >
+              {/* Vibrant Crimson/Red Overhead Spotlights */}
+              <div
+                className="absolute -top-64 left-1/2 -translate-x-1/2 w-[500px] h-[500px] rounded-full pointer-events-none"
+                style={{
+                  background:
+                    'radial-gradient(ellipse at center top, rgba(230,48,34,0.35) 0%, rgba(139,26,16,0.12) 40%, transparent 70%)',
+                  filter: 'blur(30px)',
+                }}
+              />
+
+              {/* Spotlight Cones */}
+              <div
+                className="absolute -top-48 left-1/4 w-32 h-96 opacity-30 pointer-events-none rotate-12"
+                style={{
+                  background: 'linear-gradient(to bottom, #e63022 0%, transparent 80%)',
+                  filter: 'blur(20px)',
+                }}
+              />
+              <div
+                className="absolute -top-48 right-1/4 w-32 h-96 opacity-30 pointer-events-none -rotate-12"
+                style={{
+                  background: 'linear-gradient(to bottom, #e63022 0%, transparent 80%)',
+                  filter: 'blur(20px)',
+                }}
+              />
+
+              {/* Centered Glowing Four-Pointed Star Logo */}
+              <motion.div
+                initial={{ scale: 0.5, rotate: -45, opacity: 0 }}
+                animate={{ scale: 1, rotate: 0, opacity: 1 }}
+                transition={{ duration: 0.8, type: 'spring', stiffness: 200 }}
+                className="relative mb-5"
+              >
+                <div className="absolute -inset-6 rounded-full bg-[#e63022]/40 blur-2xl pointer-events-none animate-pulse" />
+                <FourPointStar className="w-16 h-16 text-[#ff3b2a] drop-shadow-[0_0_35px_rgba(230,48,34,0.9)]" />
               </motion.div>
 
-              {/* ── ENTER PORTFOLIO BUTTON (Click to enter) ── */}
+              {/* Modern White Typography */}
+              <motion.h2
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.2, duration: 0.6 }}
+                className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-2"
+              >
+                ANKUR SHUKLA
+              </motion.h2>
+
+              <motion.p
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.35, duration: 0.6 }}
+                className="text-xs tracking-[0.35em] uppercase text-[#ff3b2a] font-mono mb-8"
+              >
+                SOFTWARE DEVELOPER // SYSTEM READY
+              </motion.p>
+
+              {/* ── ENTER PORTFOLIO BUTTON (Portfolio Theme: Neon Red) ── */}
               <motion.div
-                initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                initial={{ opacity: 0, y: 25, scale: 0.9 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ delay: 1.0, duration: 0.5, type: 'spring', stiffness: 300, damping: 20 }}
+                transition={{ delay: 0.25, duration: 0.45, type: 'spring', stiffness: 300, damping: 20 }}
                 className="flex flex-col items-center gap-2"
               >
                 <button
@@ -328,23 +523,34 @@ export default function TechIntro({ onComplete }: { onComplete?: () => void }) {
                   <span>ENTER PORTFOLIO</span>
                   <ArrowRight className="w-4 h-4 text-white group-hover:translate-x-1.5 transition-transform duration-300" />
 
-                  {/* Red light sweep animation across button */}
+                  {/* Light sweep animation */}
                   <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent pointer-events-none" />
                 </button>
-                <span className="text-[10px] font-mono text-[#555] tracking-widest uppercase">
+                <span className="text-[10px] font-mono text-[#666] tracking-widest uppercase">
                   [ Click to Enter or Press ENTER ]
                 </span>
               </motion.div>
             </motion.div>
           )}
 
-          {/* Bottom progress bar indicating sequence status */}
+          {/* Bottom sequence progress bar in portfolio red */}
           <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#111]">
             <motion.div
               initial={{ width: '0%' }}
-              animate={{ width: shot === 4 ? '100%' : shot === 3 ? '75%' : shot === 2 ? '45%' : '25%' }}
+              animate={{
+                width:
+                  shot === 5
+                    ? '100%'
+                    : shot === 4
+                    ? '80%'
+                    : shot === 3
+                    ? '60%'
+                    : shot === 2
+                    ? '40%'
+                    : '20%',
+              }}
               transition={{ duration: 1.2, ease: 'easeOut' }}
-              className="h-full bg-gradient-to-r from-[#8b1a10] via-[#e63022] to-[#ff4d3a]"
+              className="h-full bg-gradient-to-r from-[#8b1a10] via-[#e63022] to-[#ff3b2a]"
             />
           </div>
         </motion.div>
@@ -354,9 +560,57 @@ export default function TechIntro({ onComplete }: { onComplete?: () => void }) {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   12-Point Geometric Starburst Icon SVG
+   Orbital Badge for Shot 2 Concentric Radar (Red Neon Theme)
 ───────────────────────────────────────────────────────────── */
-function Starburst12Point({ className }: { className?: string }) {
+function OrbitalBadge({
+  icon,
+  label,
+  radius,
+  speed,
+  initialAngle = 0,
+  delay = 0,
+}: {
+  icon: React.ReactNode
+  label: string
+  radius: number
+  speed: number
+  initialAngle?: number
+  delay?: number
+}) {
+  return (
+    <motion.div
+      initial={{ scale: 0, opacity: 0 }}
+      animate={{
+        scale: 1,
+        opacity: 1,
+        rotate: [initialAngle, initialAngle + 360],
+      }}
+      transition={{
+        scale: { delay, duration: 0.5, type: 'spring' },
+        opacity: { delay, duration: 0.5 },
+        rotate: { repeat: Infinity, duration: speed, ease: 'linear' },
+      }}
+      className="absolute flex items-center justify-center pointer-events-none"
+      style={{
+        width: radius * 2,
+        height: radius * 2,
+      }}
+    >
+      <div
+        className="absolute top-0 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#180909] border border-[#e63022]/60 shadow-[0_0_15px_rgba(230,48,34,0.5)] -translate-y-1/2"
+        style={{ transform: 'translateY(-50%) rotate(0deg)' }}
+      >
+        {icon}
+        <span className="text-[8.5px] font-mono text-[#ffdeda] whitespace-nowrap">{label}</span>
+      </div>
+    </motion.div>
+  )
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Glowing Neon 4-Pointed Star SVG Logo
+───────────────────────────────────────────────────────────── */
+function FourPointStar({ className }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 100 100"
@@ -364,24 +618,10 @@ function Starburst12Point({ className }: { className?: string }) {
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
-      {/* 12 points constructed by combining rotated diamonds/crosses */}
-      <g stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round">
-        <path d="M50 5 L53 47 L95 50 L53 53 L50 95 L47 53 L5 50 L47 47 Z" fill="currentColor" fillOpacity="0.25" />
-        <path
-          d="M50 5 L53 47 L95 50 L53 53 L50 95 L47 53 L5 50 L47 47 Z"
-          transform="rotate(30 50 50)"
-          fill="currentColor"
-          fillOpacity="0.15"
-        />
-        <path
-          d="M50 5 L53 47 L95 50 L53 53 L50 95 L47 53 L5 50 L47 47 Z"
-          transform="rotate(60 50 50)"
-          fill="currentColor"
-          fillOpacity="0.15"
-        />
-      </g>
-      {/* Center glowing circle */}
-      <circle cx="50" cy="50" r="6" fill="currentColor" />
+      <path
+        d="M50 0 C50 35 35 50 0 50 C35 50 50 65 50 100 C50 65 65 50 100 50 C65 50 50 35 50 0 Z"
+        fill="currentColor"
+      />
     </svg>
   )
 }

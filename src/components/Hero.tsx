@@ -40,7 +40,7 @@ WHERE p.status = 'active'`,
   },
 ]
 
-export default function Hero() {
+export default function Hero({ hasEntered = true }: { hasEntered?: boolean }) {
   const visualRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -173,27 +173,14 @@ export default function Hero() {
 
           {/* Headline — two lines */}
           <div className="overflow-hidden">
-            <motion.div
-              initial={{ y: '110%', opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.9, delay: 0.55, ease: [0.25, 0.1, 0.25, 1] }}
-              className="overflow-hidden"
-            >
-              <h1 className="font-display font-bold leading-[0.9] tracking-tight select-none text-white text-[clamp(3rem,8vw,7.5rem)]">
-                Software
-              </h1>
-            </motion.div>
-            <motion.div
-              initial={{ y: '110%', opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.9, delay: 0.68, ease: [0.25, 0.1, 0.25, 1] }}
-              className="overflow-hidden"
-            >
-              <h1 className="font-display font-bold leading-[0.9] tracking-tight select-none text-[#e63022] text-[clamp(3rem,8vw,7.5rem)]">
-                Developer
-              </h1>
-            </motion.div>
+            <h1 className="font-display font-bold leading-[0.9] tracking-tight select-none text-white text-[clamp(3rem,8vw,7.5rem)]">
+              Software
+            </h1>
+            <h1 className="font-display font-bold leading-[0.9] tracking-tight select-none text-[#e63022] text-[clamp(3rem,8vw,7.5rem)]">
+              Developer
+            </h1>
           </div>
+
 
           {/* Role tag */}
           <motion.div

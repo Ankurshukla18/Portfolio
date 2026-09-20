@@ -21,14 +21,16 @@ const CustomCursor = dynamic(() => import('@/components/CustomCursor'), {
 })
 
 export default function Home() {
+  const [hasEntered, setHasEntered] = useState(false)
+
   return (
     <main className="relative bg-[#050505] min-h-screen">
-      {/* High-tech cinematic intro animation sequence */}
-      <TechIntro />
+      {/* High-tech cinematic intro animation sequence with Enter Portfolio trigger */}
+      <TechIntro onComplete={() => setHasEntered(true)} />
 
       <CustomCursor />
       <Navbar />
-      <Hero />
+      <Hero hasEntered={hasEntered} />
       <About />
       <IDCard />
       <Skills />
